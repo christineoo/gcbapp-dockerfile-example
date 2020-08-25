@@ -15,6 +15,9 @@ steps:
 - name: 'gcr.io/$PROJECT_ID/gcloud'
   args: ['builds', 'list']
 
+- name: 'gcr.io/$PROJECT_ID/gcloud'
+  args: ['ai-platform', 'jobs', 'list']
+
 images:
 - 'gcr.io/$PROJECT_ID/gcloud'
 - 'gcr.io/$PROJECT_ID/gcloud-slim'

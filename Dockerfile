@@ -1,17 +1,30 @@
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+FROM gcloud-slim
 
-FROM alpine
-COPY helloworld.sh /
-CMD ["/helloworld.sh"]
+RUN apt-get -y update && \
+    # JRE is required for cloud-datastore-emulator
+    apt-get -y install default-jre && \
+
+    # Install all available components
+    /builder/google-cloud-sdk/bin/gcloud -q components install \
+        alpha beta \
+        app-engine-go \
+        app-engine-java \
+        app-engine-python \
+        app-engine-python-extras \
+        bigtable \
+        cbt \
+        cloud-datastore-emulator \
+        cloud-firestore-emulator \
+        cloud-build-local \
+        datalab \
+        docker-credential-gcr \
+        emulator-reverse-proxy \
+        kubectl \
+        pubsub-emulator \
+        && \
+
+    /builder/google-cloud-sdk/bin/gcloud -q components update && \
+    /builder/google-cloud-sdk/bin/gcloud components list && \
+
+    # Clean up
+    rm -rf /var/lib/apt/lists/*
